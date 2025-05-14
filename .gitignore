@@ -1,0 +1,31 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+
+# Data
+data/
+*.csv
+*.tsv
+*.mp3
+*.gz
+*.parquet
+
+# Model logs
+lightning_logs/
+*.out
+wandb/
