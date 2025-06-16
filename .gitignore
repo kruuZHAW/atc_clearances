@@ -22,6 +22,7 @@ data/
 *.csv
 *.tsv
 *.mp3
+*.wav
 *.gz
 *.parquet
 
