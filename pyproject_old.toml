@@ -1,24 +1,22 @@
 [project]
-name = "atc_communication"
+name = "atc-clearences"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "haversine>=2.9.0",
-    "notebook>=7.3.2",
+    "accelerate>=1.6.0",
+    "cm-jupyter-eg-kernel-wlm>=4.0.1",
+    "datasets>=3.6.0",
+    "ipykernel>=6.29.5",
+    "notebook>=7.4.2",
     "openai-whisper>=20240930",
-    "plotly>=5.24.1",
     "pydub>=0.25.1",
     "soundfile>=0.13.1",
     "streamlink>=7.4.0",
-    "torchaudio>=2.7.1",
+    "torchaudio>=2.7.0",
     "traffic>=2.11.1",
-    "transformers>=4.52.4",
+    "transformers>=4.51.3",
+    "wave>=0.0.2",
     "webrtcvad>=2.0.10",
-]
-
-[project.optional-dependencies]
-cluster = [
-    "cm-jupyter-eg-kernel-wlm>=4.0.1",
 ]
