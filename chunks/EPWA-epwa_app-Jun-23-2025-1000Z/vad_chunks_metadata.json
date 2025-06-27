@@ -1,0 +1,878 @@
+[
+  {
+    "path": "speech_000.wav",
+    "offset": 2.97
+  },
+  {
+    "path": "speech_001.wav",
+    "offset": 13.74
+  },
+  {
+    "path": "speech_002.wav",
+    "offset": 19.26
+  },
+  {
+    "path": "speech_003.wav",
+    "offset": 24.63
+  },
+  {
+    "path": "speech_004.wav",
+    "offset": 30.63
+  },
+  {
+    "path": "speech_005.wav",
+    "offset": 34.89
+  },
+  {
+    "path": "speech_006.wav",
+    "offset": 82.2
+  },
+  {
+    "path": "speech_007.wav",
+    "offset": 84.93
+  },
+  {
+    "path": "speech_008.wav",
+    "offset": 107.19
+  },
+  {
+    "path": "speech_009.wav",
+    "offset": 112.17
+  },
+  {
+    "path": "speech_010.wav",
+    "offset": 116.22
+  },
+  {
+    "path": "speech_011.wav",
+    "offset": 122.58
+  },
+  {
+    "path": "speech_012.wav",
+    "offset": 151.53
+  },
+  {
+    "path": "speech_013.wav",
+    "offset": 154.02
+  },
+  {
+    "path": "speech_014.wav",
+    "offset": 158.64
+  },
+  {
+    "path": "speech_015.wav",
+    "offset": 169.05
+  },
+  {
+    "path": "speech_016.wav",
+    "offset": 173.28
+  },
+  {
+    "path": "speech_017.wav",
+    "offset": 175.17
+  },
+  {
+    "path": "speech_018.wav",
+    "offset": 190.47
+  },
+  {
+    "path": "speech_019.wav",
+    "offset": 201.81
+  },
+  {
+    "path": "speech_020.wav",
+    "offset": 209.16
+  },
+  {
+    "path": "speech_021.wav",
+    "offset": 249.15
+  },
+  {
+    "path": "speech_022.wav",
+    "offset": 257.22
+  },
+  {
+    "path": "speech_023.wav",
+    "offset": 272.79
+  },
+  {
+    "path": "speech_024.wav",
+    "offset": 275.73
+  },
+  {
+    "path": "speech_025.wav",
+    "offset": 278.7
+  },
+  {
+    "path": "speech_026.wav",
+    "offset": 281.61
+  },
+  {
+    "path": "speech_027.wav",
+    "offset": 319.59
+  },
+  {
+    "path": "speech_028.wav",
+    "offset": 329.55
+  },
+  {
+    "path": "speech_029.wav",
+    "offset": 332.79
+  },
+  {
+    "path": "speech_030.wav",
+    "offset": 335.13
+  },
+  {
+    "path": "speech_031.wav",
+    "offset": 339.51
+  },
+  {
+    "path": "speech_032.wav",
+    "offset": 343.53
+  },
+  {
+    "path": "speech_033.wav",
+    "offset": 348.51
+  },
+  {
+    "path": "speech_034.wav",
+    "offset": 356.58
+  },
+  {
+    "path": "speech_035.wav",
+    "offset": 361.17
+  },
+  {
+    "path": "speech_036.wav",
+    "offset": 379.38
+  },
+  {
+    "path": "speech_037.wav",
+    "offset": 381.39
+  },
+  {
+    "path": "speech_038.wav",
+    "offset": 389.55
+  },
+  {
+    "path": "speech_039.wav",
+    "offset": 393.57
+  },
+  {
+    "path": "speech_040.wav",
+    "offset": 404.01
+  },
+  {
+    "path": "speech_041.wav",
+    "offset": 407.76
+  },
+  {
+    "path": "speech_042.wav",
+    "offset": 416.97
+  },
+  {
+    "path": "speech_043.wav",
+    "offset": 419.31
+  },
+  {
+    "path": "speech_044.wav",
+    "offset": 430.14
+  },
+  {
+    "path": "speech_045.wav",
+    "offset": 433.92
+  },
+  {
+    "path": "speech_046.wav",
+    "offset": 441.72
+  },
+  {
+    "path": "speech_047.wav",
+    "offset": 445.86
+  },
+  {
+    "path": "speech_048.wav",
+    "offset": 476.49
+  },
+  {
+    "path": "speech_049.wav",
+    "offset": 479.01
+  },
+  {
+    "path": "speech_050.wav",
+    "offset": 496.41
+  },
+  {
+    "path": "speech_051.wav",
+    "offset": 502.77
+  },
+  {
+    "path": "speech_052.wav",
+    "offset": 505.92
+  },
+  {
+    "path": "speech_053.wav",
+    "offset": 518.04
+  },
+  {
+    "path": "speech_054.wav",
+    "offset": 522.0
+  },
+  {
+    "path": "speech_055.wav",
+    "offset": 524.25
+  },
+  {
+    "path": "speech_056.wav",
+    "offset": 528.69
+  },
+  {
+    "path": "speech_057.wav",
+    "offset": 532.83
+  },
+  {
+    "path": "speech_058.wav",
+    "offset": 540.36
+  },
+  {
+    "path": "speech_059.wav",
+    "offset": 558.21
+  },
+  {
+    "path": "speech_060.wav",
+    "offset": 561.12
+  },
+  {
+    "path": "speech_061.wav",
+    "offset": 565.32
+  },
+  {
+    "path": "speech_062.wav",
+    "offset": 567.66
+  },
+  {
+    "path": "speech_063.wav",
+    "offset": 569.28
+  },
+  {
+    "path": "speech_064.wav",
+    "offset": 571.14
+  },
+  {
+    "path": "speech_065.wav",
+    "offset": 574.71
+  },
+  {
+    "path": "speech_066.wav",
+    "offset": 578.55
+  },
+  {
+    "path": "speech_067.wav",
+    "offset": 583.08
+  },
+  {
+    "path": "speech_068.wav",
+    "offset": 585.15
+  },
+  {
+    "path": "speech_069.wav",
+    "offset": 587.88
+  },
+  {
+    "path": "speech_070.wav",
+    "offset": 590.55
+  },
+  {
+    "path": "speech_071.wav",
+    "offset": 597.9
+  },
+  {
+    "path": "speech_072.wav",
+    "offset": 628.74
+  },
+  {
+    "path": "speech_073.wav",
+    "offset": 632.16
+  },
+  {
+    "path": "speech_074.wav",
+    "offset": 634.62
+  },
+  {
+    "path": "speech_075.wav",
+    "offset": 672.42
+  },
+  {
+    "path": "speech_076.wav",
+    "offset": 676.89
+  },
+  {
+    "path": "speech_077.wav",
+    "offset": 680.61
+  },
+  {
+    "path": "speech_078.wav",
+    "offset": 686.46
+  },
+  {
+    "path": "speech_079.wav",
+    "offset": 689.46
+  },
+  {
+    "path": "speech_080.wav",
+    "offset": 696.69
+  },
+  {
+    "path": "speech_081.wav",
+    "offset": 704.43
+  },
+  {
+    "path": "speech_082.wav",
+    "offset": 724.05
+  },
+  {
+    "path": "speech_083.wav",
+    "offset": 730.95
+  },
+  {
+    "path": "speech_084.wav",
+    "offset": 734.76
+  },
+  {
+    "path": "speech_085.wav",
+    "offset": 742.41
+  },
+  {
+    "path": "speech_086.wav",
+    "offset": 752.4
+  },
+  {
+    "path": "speech_087.wav",
+    "offset": 756.57
+  },
+  {
+    "path": "speech_088.wav",
+    "offset": 760.56
+  },
+  {
+    "path": "speech_089.wav",
+    "offset": 764.1
+  },
+  {
+    "path": "speech_090.wav",
+    "offset": 766.95
+  },
+  {
+    "path": "speech_091.wav",
+    "offset": 772.56
+  },
+  {
+    "path": "speech_092.wav",
+    "offset": 775.74
+  },
+  {
+    "path": "speech_093.wav",
+    "offset": 817.29
+  },
+  {
+    "path": "speech_094.wav",
+    "offset": 823.41
+  },
+  {
+    "path": "speech_095.wav",
+    "offset": 825.48
+  },
+  {
+    "path": "speech_096.wav",
+    "offset": 850.65
+  },
+  {
+    "path": "speech_097.wav",
+    "offset": 854.19
+  },
+  {
+    "path": "speech_098.wav",
+    "offset": 865.77
+  },
+  {
+    "path": "speech_099.wav",
+    "offset": 869.28
+  },
+  {
+    "path": "speech_100.wav",
+    "offset": 890.85
+  },
+  {
+    "path": "speech_101.wav",
+    "offset": 895.74
+  },
+  {
+    "path": "speech_102.wav",
+    "offset": 903.9
+  },
+  {
+    "path": "speech_103.wav",
+    "offset": 908.28
+  },
+  {
+    "path": "speech_104.wav",
+    "offset": 916.02
+  },
+  {
+    "path": "speech_105.wav",
+    "offset": 919.38
+  },
+  {
+    "path": "speech_106.wav",
+    "offset": 925.59
+  },
+  {
+    "path": "speech_107.wav",
+    "offset": 929.43
+  },
+  {
+    "path": "speech_108.wav",
+    "offset": 943.2
+  },
+  {
+    "path": "speech_109.wav",
+    "offset": 945.78
+  },
+  {
+    "path": "speech_110.wav",
+    "offset": 952.41
+  },
+  {
+    "path": "speech_111.wav",
+    "offset": 954.57
+  },
+  {
+    "path": "speech_112.wav",
+    "offset": 961.95
+  },
+  {
+    "path": "speech_113.wav",
+    "offset": 971.76
+  },
+  {
+    "path": "speech_114.wav",
+    "offset": 976.17
+  },
+  {
+    "path": "speech_115.wav",
+    "offset": 980.46
+  },
+  {
+    "path": "speech_116.wav",
+    "offset": 984.54
+  },
+  {
+    "path": "speech_117.wav",
+    "offset": 987.87
+  },
+  {
+    "path": "speech_118.wav",
+    "offset": 992.85
+  },
+  {
+    "path": "speech_119.wav",
+    "offset": 996.66
+  },
+  {
+    "path": "speech_120.wav",
+    "offset": 1006.74
+  },
+  {
+    "path": "speech_121.wav",
+    "offset": 1012.26
+  },
+  {
+    "path": "speech_122.wav",
+    "offset": 1016.37
+  },
+  {
+    "path": "speech_123.wav",
+    "offset": 1021.08
+  },
+  {
+    "path": "speech_124.wav",
+    "offset": 1027.92
+  },
+  {
+    "path": "speech_125.wav",
+    "offset": 1041.96
+  },
+  {
+    "path": "speech_126.wav",
+    "offset": 1044.99
+  },
+  {
+    "path": "speech_127.wav",
+    "offset": 1064.88
+  },
+  {
+    "path": "speech_128.wav",
+    "offset": 1068.15
+  },
+  {
+    "path": "speech_129.wav",
+    "offset": 1073.31
+  },
+  {
+    "path": "speech_130.wav",
+    "offset": 1080.57
+  },
+  {
+    "path": "speech_131.wav",
+    "offset": 1082.76
+  },
+  {
+    "path": "speech_132.wav",
+    "offset": 1095.21
+  },
+  {
+    "path": "speech_133.wav",
+    "offset": 1100.07
+  },
+  {
+    "path": "speech_134.wav",
+    "offset": 1102.59
+  },
+  {
+    "path": "speech_135.wav",
+    "offset": 1125.96
+  },
+  {
+    "path": "speech_136.wav",
+    "offset": 1145.7
+  },
+  {
+    "path": "speech_137.wav",
+    "offset": 1152.09
+  },
+  {
+    "path": "speech_138.wav",
+    "offset": 1156.5
+  },
+  {
+    "path": "speech_139.wav",
+    "offset": 1160.94
+  },
+  {
+    "path": "speech_140.wav",
+    "offset": 1164.45
+  },
+  {
+    "path": "speech_141.wav",
+    "offset": 1167.66
+  },
+  {
+    "path": "speech_142.wav",
+    "offset": 1171.38
+  },
+  {
+    "path": "speech_143.wav",
+    "offset": 1174.53
+  },
+  {
+    "path": "speech_144.wav",
+    "offset": 1178.28
+  },
+  {
+    "path": "speech_145.wav",
+    "offset": 1180.98
+  },
+  {
+    "path": "speech_146.wav",
+    "offset": 1188.78
+  },
+  {
+    "path": "speech_147.wav",
+    "offset": 1191.36
+  },
+  {
+    "path": "speech_148.wav",
+    "offset": 1200.93
+  },
+  {
+    "path": "speech_149.wav",
+    "offset": 1203.27
+  },
+  {
+    "path": "speech_150.wav",
+    "offset": 1212.93
+  },
+  {
+    "path": "speech_151.wav",
+    "offset": 1218.66
+  },
+  {
+    "path": "speech_152.wav",
+    "offset": 1222.71
+  },
+  {
+    "path": "speech_153.wav",
+    "offset": 1242.54
+  },
+  {
+    "path": "speech_154.wav",
+    "offset": 1247.1
+  },
+  {
+    "path": "speech_155.wav",
+    "offset": 1264.11
+  },
+  {
+    "path": "speech_156.wav",
+    "offset": 1266.45
+  },
+  {
+    "path": "speech_157.wav",
+    "offset": 1281.42
+  },
+  {
+    "path": "speech_158.wav",
+    "offset": 1292.13
+  },
+  {
+    "path": "speech_159.wav",
+    "offset": 1296.84
+  },
+  {
+    "path": "speech_160.wav",
+    "offset": 1299.93
+  },
+  {
+    "path": "speech_161.wav",
+    "offset": 1305.66
+  },
+  {
+    "path": "speech_162.wav",
+    "offset": 1307.94
+  },
+  {
+    "path": "speech_163.wav",
+    "offset": 1316.04
+  },
+  {
+    "path": "speech_164.wav",
+    "offset": 1323.15
+  },
+  {
+    "path": "speech_165.wav",
+    "offset": 1328.82
+  },
+  {
+    "path": "speech_166.wav",
+    "offset": 1335.18
+  },
+  {
+    "path": "speech_167.wav",
+    "offset": 1344.72
+  },
+  {
+    "path": "speech_168.wav",
+    "offset": 1352.82
+  },
+  {
+    "path": "speech_169.wav",
+    "offset": 1356.18
+  },
+  {
+    "path": "speech_170.wav",
+    "offset": 1389.54
+  },
+  {
+    "path": "speech_171.wav",
+    "offset": 1392.09
+  },
+  {
+    "path": "speech_172.wav",
+    "offset": 1414.83
+  },
+  {
+    "path": "speech_173.wav",
+    "offset": 1419.87
+  },
+  {
+    "path": "speech_174.wav",
+    "offset": 1422.21
+  },
+  {
+    "path": "speech_175.wav",
+    "offset": 1458.9
+  },
+  {
+    "path": "speech_176.wav",
+    "offset": 1461.06
+  },
+  {
+    "path": "speech_177.wav",
+    "offset": 1468.5
+  },
+  {
+    "path": "speech_178.wav",
+    "offset": 1472.61
+  },
+  {
+    "path": "speech_179.wav",
+    "offset": 1480.5
+  },
+  {
+    "path": "speech_180.wav",
+    "offset": 1485.54
+  },
+  {
+    "path": "speech_181.wav",
+    "offset": 1493.34
+  },
+  {
+    "path": "speech_182.wav",
+    "offset": 1498.47
+  },
+  {
+    "path": "speech_183.wav",
+    "offset": 1504.53
+  },
+  {
+    "path": "speech_184.wav",
+    "offset": 1506.63
+  },
+  {
+    "path": "speech_185.wav",
+    "offset": 1530.6
+  },
+  {
+    "path": "speech_186.wav",
+    "offset": 1532.58
+  },
+  {
+    "path": "speech_187.wav",
+    "offset": 1538.55
+  },
+  {
+    "path": "speech_188.wav",
+    "offset": 1540.26
+  },
+  {
+    "path": "speech_189.wav",
+    "offset": 1602.03
+  },
+  {
+    "path": "speech_190.wav",
+    "offset": 1607.34
+  },
+  {
+    "path": "speech_191.wav",
+    "offset": 1610.46
+  },
+  {
+    "path": "speech_192.wav",
+    "offset": 1618.05
+  },
+  {
+    "path": "speech_193.wav",
+    "offset": 1631.97
+  },
+  {
+    "path": "speech_194.wav",
+    "offset": 1634.73
+  },
+  {
+    "path": "speech_195.wav",
+    "offset": 1638.78
+  },
+  {
+    "path": "speech_196.wav",
+    "offset": 1643.7
+  },
+  {
+    "path": "speech_197.wav",
+    "offset": 1672.32
+  },
+  {
+    "path": "speech_198.wav",
+    "offset": 1681.98
+  },
+  {
+    "path": "speech_199.wav",
+    "offset": 1684.74
+  },
+  {
+    "path": "speech_200.wav",
+    "offset": 1687.29
+  },
+  {
+    "path": "speech_201.wav",
+    "offset": 1689.03
+  },
+  {
+    "path": "speech_202.wav",
+    "offset": 1692.9
+  },
+  {
+    "path": "speech_203.wav",
+    "offset": 1696.5
+  },
+  {
+    "path": "speech_204.wav",
+    "offset": 1701.3
+  },
+  {
+    "path": "speech_205.wav",
+    "offset": 1705.38
+  },
+  {
+    "path": "speech_206.wav",
+    "offset": 1707.9
+  },
+  {
+    "path": "speech_207.wav",
+    "offset": 1710.21
+  },
+  {
+    "path": "speech_208.wav",
+    "offset": 1737.0
+  },
+  {
+    "path": "speech_209.wav",
+    "offset": 1740.81
+  },
+  {
+    "path": "speech_210.wav",
+    "offset": 1750.47
+  },
+  {
+    "path": "speech_211.wav",
+    "offset": 1756.53
+  },
+  {
+    "path": "speech_212.wav",
+    "offset": 1821.66
+  },
+  {
+    "path": "speech_213.wav",
+    "offset": 1825.5
+  },
+  {
+    "path": "speech_214.wav",
+    "offset": 1829.55
+  },
+  {
+    "path": "speech_215.wav",
+    "offset": 1836.96
+  },
+  {
+    "path": "speech_216.wav",
+    "offset": 1842.03
+  },
+  {
+    "path": "speech_217.wav",
+    "offset": 1879.89
+  },
+  {
+    "path": "speech_218.wav",
+    "offset": 1882.8
+  }
+]

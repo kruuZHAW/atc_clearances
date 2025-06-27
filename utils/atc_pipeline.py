@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup
 
 from traffic.data import opensky
 
+import json
 import wave
 import webrtcvad
 from pydub import AudioSegment
@@ -97,10 +98,12 @@ def download_adsb(session: RecordingSession, save_path="./adsb", use_cache=True)
         return session
 
     try:
+        # TODO: Fetch all aircraft in TMA, not only departing /arriving ones 
         adsb_df = opensky.history(
             start=session.start_time,
             stop=session.end_time,
-            arrival_airport=session.airport
+            # arrival_airport=session.airport
+            airport=session.airport # both arrivals and departures
         )
 
         if adsb_df is None or len(adsb_df) == 0:
@@ -135,12 +138,18 @@ def split_audio_by_vad(session: RecordingSession, chunk_dir="./chunks", use_cach
     base_name = f"{session.airport}-{session.channel}-{date_str}-{time_str}"
     
     chunk_output_dir = Path(chunk_dir) / base_name
+    meta_path = chunk_output_dir / "vad_chunks_metadata.json"
     os.makedirs(chunk_output_dir, exist_ok=True)
 
     # Use cache: skip if already split
     if use_cache and any(chunk_output_dir.glob("speech_*.wav")):
         print(f"[vad] Using cached audio chunks in {chunk_output_dir}")
         return sorted(chunk_output_dir.glob("speech_*.wav"))
+    
+    if use_cache and meta_path.exists():
+        with open(meta_path) as f:
+            chunk_meta = json.load(f)
+        return [(chunk_output_dir / entry["path"], entry["offset"]) for entry in chunk_meta]
 
     # Step 1: Convert MP3 to WAV (16kHz mono)
     temp_wav = chunk_output_dir / "temp_audio.wav"
@@ -149,6 +158,7 @@ def split_audio_by_vad(session: RecordingSession, chunk_dir="./chunks", use_cach
 
     # Step 2: Run VAD to chunk the audio
     voiced_chunks = []
+    chunk_meta = []
     with wave.open(str(temp_wav), 'rb') as wf:
         vad = webrtcvad.Vad(2)
         frame_duration = 30  # ms
@@ -176,6 +186,7 @@ def split_audio_by_vad(session: RecordingSession, chunk_dir="./chunks", use_cach
                 if voiced:
                     voiced = False
                     if len(chunk) >= min_samples * 2:
+                        start_sec = offset / (sample_rate * 2)
                         fname = chunk_output_dir / f"speech_{i:03d}.wav"
                         segment = AudioSegment(
                             data=chunk,
@@ -184,15 +195,20 @@ def split_audio_by_vad(session: RecordingSession, chunk_dir="./chunks", use_cach
                             channels=1
                         )
                         segment.export(fname, format="wav")
-                        voiced_chunks.append(fname)
+                        chunk_meta.append({"path": str(fname.name), "offset": start_sec})
+                        voiced_chunks.append((fname, start_sec))
                         print(f"[vad] Saved chunk {i+1}: {fname}")
                         i += 1
+
+    # Medata data that stores the offset from start in seconds.
+    with open(meta_path, "w") as f:
+        json.dump(chunk_meta, f, indent=2)
 
     # Clean up temp
     if temp_wav.exists():
         temp_wav.unlink()
 
-    return voiced_chunks
+    return voiced_chunks # (chunk_path, offset_in_seconds)
 
 def transcribe_audio(session: RecordingSession, save_path="./transcripts", use_cache=True) -> RecordingSession:
     """
@@ -229,7 +245,11 @@ def transcribe_audio(session: RecordingSession, save_path="./transcripts", use_c
             raise RuntimeError("No voiced chunks found for transcription.")
 
         results = []
-        for i, path in enumerate(sorted(chunk_paths)):
+        for i, (path, offset_sec) in enumerate(sorted(chunk_paths)):
+            # Tracking communication time
+            chunk_time = session.start_time + timedelta(seconds=offset_sec)
+            timestamp_str = chunk_time.strftime("[%H:%M:%S]") # Not the day as the audio are only 30min long
+            
             audio_input, _ = torchaudio.load(path)
             inputs = processor(audio_input.squeeze(), sampling_rate=16000, return_tensors="pt")
             input_features = inputs.input_features
@@ -237,8 +257,9 @@ def transcribe_audio(session: RecordingSession, save_path="./transcripts", use_c
             attention_mask = inputs.get("attention_mask", None)
             generated_ids = model.generate(input_features, attention_mask=attention_mask)
             transcription = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
-            results.append(transcription)
-            print(f"[transcribe] Chunk {i+1}/{len(chunk_paths)}: {transcription}")
+            
+            results.append(f"{timestamp_str} {transcription}")
+            print(f"[transcribe] Chunk {i+1}/{len(chunk_paths)}: {timestamp_str} {transcription}")
 
         final_transcript = "\n".join(results)
         transcript_file.write_text(final_transcript)
@@ -253,12 +274,12 @@ def transcribe_audio(session: RecordingSession, save_path="./transcripts", use_c
 
     return session
 
-def process_sessions(sessions: list[RecordingSession]) -> list[RecordingSession]:
-    for i, s in enumerate(sessions):
-        print(f"--- Processing session {i+1}/{len(sessions)} ---")
-        s = download_audio(s)
-        s = download_adsb(s)
-        s = transcribe_audio(s)
-        sessions[i] = s
-    return sessions
+# def process_sessions(sessions: list[RecordingSession]) -> list[RecordingSession]:
+#     for i, s in enumerate(sessions):
+#         print(f"--- Processing session {i+1}/{len(sessions)} ---")
+#         s = download_audio(s)
+#         s = download_adsb(s)
+#         s = transcribe_audio(s)
+#         sessions[i] = s
+#     return sessions
 
