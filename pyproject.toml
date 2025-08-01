@@ -5,12 +5,15 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "folium>=0.20.0",
     "geopy>=2.4.1",
     "haversine>=2.9.0",
     "ipyleaflet>=0.20.0",
+    "librosa>=0.11.0",
     "notebook>=7.3.2",
     "openai-whisper>=20240930",
     "plotly>=5.24.1",
+    "pyannote-audio>=3.3.2",
     "pydub>=0.25.1",
     "soundfile>=0.13.1",
     "streamlink>=7.4.0",
