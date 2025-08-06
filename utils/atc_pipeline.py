@@ -338,7 +338,7 @@ def split_audio_by_vad(session: RecordingSession, chunk_dir="./chunks", use_cach
         i = 0
         voiced = False
         chunk = b''
-        min_samples = 16000  # 1s
+        min_samples = 8000  # 0.5s
 
         for offset in range(0, len(frames), frame_bytes):
             frame = frames[offset:offset + frame_bytes]
@@ -391,6 +391,63 @@ def split_audio_by_vad(session: RecordingSession, chunk_dir="./chunks", use_cach
 
     return voiced_chunks
 
+def split_audio_by_diarization(session: RecordingSession, chunk_dir="./chunks", use_cache=True) -> list[tuple[Path, float]]:
+    """
+    Splits session.audio_path into speaker-specific chunks using pyannote speaker diarization.
+    Returns list of (chunk_path, offset_in_seconds)
+    """
+    from pyannote.audio import Pipeline
+    from pydub import AudioSegment
+    from pathlib import Path
+    import os, json
+
+    # Prepare output paths
+    date_str = session.start_time.strftime("%b-%d-%Y")
+    time_str = session.start_time.strftime("%H%M") + "Z"
+    base_name = (
+        f"{session.airport.icao}-{session.channel}-{date_str}-{time_str}"
+        if session.airport else
+        f"{session.artcc.designator}-{session.channel}-{date_str}-{time_str}"
+    )
+
+    chunk_output_dir = Path(chunk_dir) / base_name
+    meta_path = chunk_output_dir / "vad_chunks_metadata.json"
+    os.makedirs(chunk_output_dir, exist_ok=True)
+
+    # Use cache
+    if use_cache and meta_path.exists():
+        with open(meta_path) as f:
+            chunk_meta = json.load(f)
+        return [(chunk_output_dir / entry["path"], entry["offset"]) for entry in chunk_meta]
+
+    # Convert audio to 16kHz mono WAV
+    audio = AudioSegment.from_file(session.audio_path).set_channels(1).set_frame_rate(16000)
+    temp_wav = chunk_output_dir / "full_audio.wav"
+    audio.export(temp_wav, format="wav")
+
+    # Run diarization on full audio
+    print("[diarization] Running full-audio speaker diarization...")
+    pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization", use_auth_token=os.getenv("HF_TOKEN"))
+    diarization = pipeline(str(temp_wav))
+
+    # Export speaker segments
+    chunk_meta = []
+    voiced_chunks = []
+    for i, (turn, _, speaker) in enumerate(diarization.itertracks(yield_label=True)):
+        segment = audio[turn.start * 1000: turn.end * 1000]
+        out_path = chunk_output_dir / f"speech_{i:03d}.wav"
+        segment.export(out_path, format="wav")
+        offset_sec = float(turn.start)
+        chunk_meta.append({"path": str(out_path.name), "offset": offset_sec})
+        voiced_chunks.append((out_path, offset_sec))
+        print(f"[diarization] Saved {out_path} ({speaker})")
+
+    with open(meta_path, "w") as f:
+        json.dump(chunk_meta, f, indent=2)
+
+    temp_wav.unlink(missing_ok=True)
+
+    return voiced_chunks
 
 def transcribe_audio(session: RecordingSession, save_path="./transcripts", use_cache=True) -> RecordingSession:
     """
