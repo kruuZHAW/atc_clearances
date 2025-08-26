@@ -47,4 +47,4 @@ echo "I am running with job id $SLURM_JOB_ID"
 
 # run python script in the activated environment
 # -> make sure that the path matches your setup
-uv run ${APP_ROOT}/utils/download_muac.py 2025-08-10 /ceph/store/kruu/atc_muac/2025/08/10
+uv run ${APP_ROOT}/utils/sftp_pull_sync.py

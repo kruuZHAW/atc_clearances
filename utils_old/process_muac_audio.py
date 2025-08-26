@@ -1,3 +1,5 @@
+#### DEPRECIATED: WORKS WITH THE OLD RECORDING WAY ####
+
 import os
 import re
 import numpy as np
@@ -314,7 +316,7 @@ def diarize_audio(
 
     return results
 
-# ----- TRANSCRIPTION FUNCTIONS -----
+# ----- TRANSCRIPTION FUNCTIONS (OLD) -----
 
 def audiosegment_to_tensor(audio):
     """Convert pydub.AudioSegment to torch.Tensor and sample rate."""
@@ -322,33 +324,6 @@ def audiosegment_to_tensor(audio):
     samples /= 32768.0  # normalize to [-1, 1]
     waveform = torch.from_numpy(samples).unsqueeze(0)  # shape [1, num_samples]
     return waveform, audio.frame_rate
-
-# def transcribe_segments(speech_segments, base_timestamp, model_name="jacktol/whisper-medium.en-fine-tuned-for-ATC"):
-#     model = WhisperForConditionalGeneration.from_pretrained(model_name)
-#     processor = WhisperProcessor.from_pretrained(model_name)
-#     model.eval()
-
-#     transcripts = []
-
-#     for i, (start, end, audio_segment) in enumerate(speech_segments):
-#         # Convert audio to tensor
-#         waveform, sr = audiosegment_to_tensor(audio_segment)
-#         inputs = processor(waveform.squeeze(), sampling_rate=sr, return_tensors="pt", return_attention_mask = True)
-#         input_features = inputs.input_features
-#         attention_mask = inputs.attention_mask
-
-#         # Transcribe
-#         with torch.no_grad():
-#             generated_ids = model.generate(input_features, attention_mask=attention_mask)
-#         transcription = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
-        
-#         if transcription:
-#             time = (base_timestamp + timedelta(seconds=start)).replace(microsecond=0)
-#             transcripts.append((time, transcription))
-#             print(f"[{time.strftime("%Y-%m-%d %H:%M:%S")}] {transcription}")
-
-#     return transcripts
-
 
 MIN_SAMPLES = 160  # ~10 ms at 16k; 
 
