@@ -35,6 +35,8 @@ CALLSIGN_PREFIXES = {
     "ASL": "aeroflot",
     "AUA": "austrian",
     "BAW": "speedbird",
+    "BEL": "beeline",
+    "BGA": "belouga",
     "CAL": "china airlines",
     "CAT": "aircat",
     "CCA": "air china",
@@ -57,6 +59,7 @@ CALLSIGN_PREFIXES = {
     "EIN": "shamrock",
     "ELY": "elal",
     "ENY": "envoy",
+    "ETD": "etihad",
     "ETH": "ethiopian",
     "EVA": "eva",
     "EXS": "channex",
@@ -69,11 +72,14 @@ CALLSIGN_PREFIXES = {
     "HAL": "hawaiian",
     "HYS": "sky europe",
     "IBE": "iberia",
+    "ICE": "ice air",
     "JAF": "beauty",
     "JBU": "jetblue",
     "JTL": "jetlinx",
     "KAL": "korean air",
     "KLM": "klm",
+    "LAV": "albastar",
+    "LHX": "city air",
     "LOT": "lot",
     "LXJ": "flexjet",
     "MGH": "mavi",
@@ -86,6 +92,7 @@ CALLSIGN_PREFIXES = {
     "NJE": "fraction",
     "NKS": "spirit wings",
     "NOZ": "nordic",
+    "NSZ": "rednose",
     "OAW": "helvetic",
     "PAV": "brilliant",
     "PCM": "pacific coast",
@@ -93,11 +100,13 @@ CALLSIGN_PREFIXES = {
     "QFA": "qantas",
     "QTR": "qatar",
     "QXE": "horizon",
+    "RJA": "jordanian",
     "RUK": "blue max",
     "RYR": "ryan air",
     "SAS": "scandinavian",
     "SDR": "swedestar",
     "SIA": "singapore",
+    "SVA": "saudia",
     "SWA": "southwest",
     "SWR": "swiss",
     "SXS": "sunexpress",
@@ -222,11 +231,11 @@ def build_timestamp_range(adsb: Traffic) -> pd.DataFrame:
 def active_callsigns_at(
     adsb_ranges: pd.DataFrame,
     comm_time: pd.Timestamp,
-    time_tolerance_s: int = 60,
+    time_tolerance_s: int = 5*60,
 ) -> List[str]:
     """
     adsb_ranges must have columns: ['callsign', 'min', 'max'] (timestamps)
-    Return callsigns whose active window contains comm_time (± tolerance).
+    Return callsigns whose active window contains comm_time (± tolerance). Aircraft contact radio several minutes before entering the airspace. 
     """
     # Ensure timestamps
     t0 = pd.to_datetime(comm_time) - pd.Timedelta(seconds=time_tolerance_s)

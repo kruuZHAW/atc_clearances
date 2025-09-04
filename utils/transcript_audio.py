@@ -198,8 +198,7 @@ def extract_adsb(
 
         if trf is None:
             continue
-
-        trf = trf.iterate_lazy().pipe(_keep_callsign).assign_id().eval()
+        
         if trf is not None:
             collected.append(trf)
             
@@ -210,6 +209,7 @@ def extract_adsb(
     adsb_traf = collected[0]
     for tr in collected[1:]:
         adsb_traf = adsb_traf + tr
+    adsb_traf = adsb_traf.iterate_lazy().pipe(_keep_callsign).assign_id().eval() # To avoid splitting flights across 2 consecutive hours
 
     if save_parquet:
         df = adsb_traf.data

@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=mp_py_benchmark
+#SBATCH --job-name=atc_days
 # SBATCH --output=/home/%u/.out/%j.out       ## this is where print() etc. go -> $HOME/.out
 # SBATCH --error=/home/%u/.out/%j.err        ## this is where errors go       -> $HOME/.out
 #SBATCH --time=0-24:00:00                   ## max. time in format d-hh:mm:ss
@@ -7,12 +7,13 @@
 #SBATCH --mem-per-cpu=500MB                 ## specify the memory per core
 # #SBATCH --mem=500MB                       ## alternatively, specify the memory (commented)
 #SBATCH --ntasks=1                          ## number of tasks, usually 1 in python
-#SBATCH --cpus-per-task=100                  ## number of cores
-#SBATCH --partition=defq                    ## queue (partition) to run the job in
-# #SBATCH --partition=qjupyter              ## alternative queue (commented)
-# #SBATCH --nodelist=srv-lab-t-251          ## run on a specific worker (commented)exit
+#SBATCH --cpus-per-task=64                  ## number of cores
+# SBATCH --partition=defq
 # #SBATCH --account=my_special_project      ## account to charge the job to (commented)
+#SBATCH --array=0-3%4   # 4 days starting at START_DAY, 4 concurrent
 
+set -euo pipefail
+    
 # create output directory (doesn't do anything if it already exists)
 mkdir -p ${HOME}/.out
 
@@ -35,25 +36,30 @@ echo "SCRIPT_PATH: $SCRIPT_PATH"
 APP_ROOT="$(dirname "$SCRIPT_PATH")"
 echo "APP_ROOT: $APP_ROOT"
 
+BASE_DIR="/store/kruu/atc_muac/audio_sdrplay"
+OUT_DIR="./outputs"
+SECTORS="delta_low delta_mid delta_high"
+
+START_DAY="2025-08-26"  # inclusive
+DAY=$(date -u -d "${START_DAY} + ${SLURM_ARRAY_TASK_ID} day" +%Y-%m-%d)
+START="${DAY}T00:00:00"
+STOP=$(date -u -d "${DAY} + 1 day" +%Y-%m-%dT%H:%M:%S)
+
 # load relevant module
 module load mamba
-
-# activate environment
-# Note: You can activate any env that is installed in your home directory
-# source activate aware
 
 echo "I am running on $SLURM_JOB_NODELIST"
 echo "I am running with job id $SLURM_JOB_ID"
 
-# run python script in the activated environment
-# -> make sure that the path matches your setup
+# run python script
 cd "$APP_ROOT"
 uv run -m core.run_pipeline \
-  --base-dir /store/kruu/atc_muac/audio_sdrplay \
-  --sectors delta_low delta_mid delta_high \
-  --start-utc 2025-08-25T14:00:00 \
-  --stop-utc  2025-08-25T17:00:00 \
-  --out-dir ./outputs \
+  --base-dir "$BASE_DIR" \
+  --sectors $SECTORS \
+  --min-fl-m 7000 \
+  --start-utc "$START" \
+  --stop-utc  "$STOP" \
+  --out-dir "$OUT_DIR" \
   --segmenter webrtc \
   --workers 128 \
   --show-progress

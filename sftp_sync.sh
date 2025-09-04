@@ -7,7 +7,7 @@
 #SBATCH --mem-per-cpu=500MB                 ## specify the memory per core
 # #SBATCH --mem=500MB                       ## alternatively, specify the memory (commented)
 #SBATCH --ntasks=1                          ## number of tasks, usually 1 in python
-#SBATCH --cpus-per-task=100                  ## number of cores
+#SBATCH --cpus-per-task=20                  ## number of cores
 #SBATCH --partition=defq                    ## queue (partition) to run the job in
 # #SBATCH --partition=qjupyter              ## alternative queue (commented)
 # #SBATCH --nodelist=srv-lab-t-251          ## run on a specific worker (commented)exit
