@@ -7,10 +7,10 @@
 #SBATCH --mem-per-cpu=500MB                 ## specify the memory per core
 # #SBATCH --mem=500MB                       ## alternatively, specify the memory (commented)
 #SBATCH --ntasks=1                          ## number of tasks, usually 1 in python
-#SBATCH --cpus-per-task=64                  ## number of cores
-# SBATCH --partition=defq
+#SBATCH --cpus-per-task=20                  ## number of cores
+#SBATCH --partition=defq
 # #SBATCH --account=my_special_project      ## account to charge the job to (commented)
-#SBATCH --array=0-3%4   # 4 days starting at START_DAY, 4 concurrent
+#SBATCH --array=0-1%1   # number of days-1 % number of concurrent days 
 
 set -euo pipefail
     
@@ -38,9 +38,9 @@ echo "APP_ROOT: $APP_ROOT"
 
 BASE_DIR="/store/kruu/atc_muac/audio_sdrplay"
 OUT_DIR="./outputs"
-SECTORS="delta_low delta_mid delta_high"
+SECTORS="delta_high"
 
-START_DAY="2025-08-26"  # inclusive
+START_DAY="2025-10-18"  # inclusive
 DAY=$(date -u -d "${START_DAY} + ${SLURM_ARRAY_TASK_ID} day" +%Y-%m-%d)
 START="${DAY}T00:00:00"
 STOP=$(date -u -d "${DAY} + 1 day" +%Y-%m-%dT%H:%M:%S)

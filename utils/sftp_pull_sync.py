@@ -25,6 +25,8 @@ Example (explicit flags):
       --dry-run
 """
 
+#TODO: don't put [skip] prints when already downloaded.
+
 import argparse
 import os
 import sys
@@ -192,7 +194,7 @@ def main():
     # Defaults pulled from environment so SLURM wrapper can keep CLI short/empty
     default_host = os.getenv("SFTP_HOST", "junzis.com")
     default_port = int(os.getenv("SFTP_PORT", "2222"))
-    default_user = os.getenv("SFTP_USER", "filedrop")
+    default_user = os.getenv("SFTP_USER", "sftp")
     default_key  = os.getenv("SFTP_KEY",  "~/.ssh/id_ed25519_tudelft")
     default_remote = os.getenv("SFTP_REMOTE", "atco_audio/audio_sdrplay")
     default_local  = os.path.expanduser(os.getenv("SFTP_LOCAL",  "/store/kruu/atc_muac/audio_sdrplay"))

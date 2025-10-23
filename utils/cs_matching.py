@@ -40,6 +40,7 @@ CALLSIGN_PREFIXES = {
     "CAL": "china airlines",
     "CAT": "aircat",
     "CCA": "air china",
+    "CFE": "flyer",
     "CFG": "condor",
     "CHX": "christoph",
     "CMB": "camber",

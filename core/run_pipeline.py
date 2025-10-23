@@ -27,7 +27,7 @@ from utils.cs_matching import (
     merge_callsign_entities,
 )
 
-# ---------- HELPERS ----------
+# ---------- SAVERS ----------
 
 def save_transcripts_json(transcription, path: str):
     # transcription: List[List[(datetime, str)]]
@@ -73,6 +73,90 @@ def save_catalog_json(catalog, path: str):
         })
     with open(path, "w") as f:
         json.dump(rows, f, indent=2)
+
+# ---------- LOADERS ----------
+
+def load_catalog_json(path: str | Path):
+    """Return list[(ATCFileMeta, AudioSegment)] by reloading audio from saved meta."""
+    from utils.process_audio import ATCFileMeta 
+    path = Path(path)
+    if not path.exists():
+        return None
+    with open(path, "r") as f:
+        data = json.load(f)
+
+    from pydub import AudioSegment
+    out = []
+    for row in data:
+        meta = ATCFileMeta(
+            sector=row["sector"],
+            dt=datetime.fromisoformat(row["dt"]),
+            freq_hz=int(row["freq_hz"]),
+            freq_mhz=float(row["freq_mhz"]),
+            ext=row["ext"],
+            original_name=row["original_name"],
+            path=row["path"],
+        )
+        seg = AudioSegment.from_file(meta.path).set_channels(1).set_frame_rate(16000)
+        out.append((meta, seg))
+    out.sort(key=lambda it: it[0].dt)
+    return out
+
+def load_transcripts_json(path: str | Path):
+    """Return List[List[(datetime, str)]] from JSON produced by save_transcripts_json()."""
+    path = Path(path)
+    if not path.exists():
+        return None
+    with open(path, "r") as f:
+        data = json.load(f)
+    return [[(datetime.fromisoformat(ts), text) for ts, text in group] for group in data]
+
+def load_callsign_comms(path_json: str | Path, path_parquet: str | Path):
+    """
+    Return (callsign_communications: dict, df: pd.DataFrame) if files exist.
+    Either file may be missing; we return what we can.
+    """
+    d = None
+    df = None
+    pj = Path(path_json)
+    pq = Path(path_parquet)
+    if pj.exists():
+        with open(pj, "r") as f:
+            tmp = json.load(f)
+        d = {
+            cs: [
+                {
+                    **e,
+                    "timestamp": datetime.fromisoformat(e["timestamp"]),
+                }
+                for e in entries
+            ]
+            for cs, entries in tmp.items()
+        }
+    if pq.exists():
+        df = pd.read_parquet(pq)
+        if "timestamp" in df.columns:
+            df["timestamp"] = pd.to_datetime(df["timestamp"], utc=True)
+    return d, df
+
+def load_adsb_parquet(path: str | Path):
+    """
+    Load Traffic from parquet if present; else None.
+    """
+    path = Path(path)
+    if not path.exists():
+        return None
+    try:
+        from traffic.core import Traffic
+        tr = Traffic.from_file(str(path))
+        if tr is not None:
+            return tr
+    except Exception:
+        pass
+    # Fallback: pandas -> Traffic
+    from traffic.core import Traffic
+    df = pd.read_parquet(path)
+    return Traffic(df) if df is not None else None
 
 # ---------- MAIN ----------
 
@@ -189,80 +273,97 @@ def main():
         day_dir = (out_dir / day_tag).resolve()
         day_dir.mkdir(parents=True, exist_ok=True)
         print(f"[info] === {day_tag} :: {day_start} → {day_stop} ===")
+        
+        # Paths
+        p_catalog   = day_dir / "catalog.json"
+        p_adsb      = day_dir / "adsb.parquet"
+        p_trs       = day_dir / "transcripts.json"
+        p_cs_json   = day_dir / "callsign_comms.json"
+        p_cs_parq   = day_dir / "callsign_comms.parquet"
 
         # ---------- 2. BUILD CATALOG ----------
-        print("[info] building catalog ...")
-        catalog = build_audio_catalog(
-            base_dir=args.base_dir,
-            sectors=args.sectors,
-            start=day_start,
-            stop=day_stop,
-            max_workers=args.workers,
-            show_progress=args.show_progress,
-            target_sr=16000,
-            mono=True,
-        )
-        print(f"[info] {len(catalog)} files in catalog")
+        catalog = load_catalog_json(p_catalog)
+        if catalog is not None:
+            print("[skip] catalog.json found → loading")
+        else:    
+            print("[info] building catalog ...")
+            catalog = build_audio_catalog(
+                base_dir=args.base_dir,
+                sectors=args.sectors,
+                start=day_start,
+                stop=day_stop,
+                max_workers=args.workers,
+                show_progress=args.show_progress,
+                target_sr=16000,
+                mono=True,
+            )
+            print(f"[info] {len(catalog)} files in catalog")
 
         # Save catalog metadata
-        save_catalog_json(catalog, str(day_dir / "catalog.json"))
+        save_catalog_json(catalog, p_catalog)
         
         # ---------- 3. ADS-B EXTRACTION ----------
-        print("[info] fetching ADS-B ...")
+        adsb_traf = load_adsb_parquet(p_adsb)
+        if adsb_traf is not None:
+            print("[skip] adsb.parquet found → loading")
+        else:
+            print("[info] fetching ADS-B ...")
+            # If needed: add a clipping to avoid selecting trajectories that only stay in the buffer layer without entering the delta sector
+            adsb_traf = extract_adsb(
+                start=day_start,
+                stop=day_stop,
+                bbox=bbox_buffered,
+                chunk_minutes=args.chunk_min,
+                min_baroalt_m=args.min_fl_m,
+                save_parquet=p_adsb,
+            )
 
-        # If needed: add a clipping to avoid selecting trajectories that only stay in the buffer layer without entering the delta sector
-        adsb_traf = extract_adsb(
-            start=day_start,
-            stop=day_stop,
-            bbox=bbox_buffered,
-            chunk_minutes=args.chunk_min,
-            min_baroalt_m=args.min_fl_m,
-            save_parquet=str(day_dir / "adsb.parquet"),
-        )
-
-        if adsb_traf is None:
-            print(f"[warn] No ADS-B data for {day_tag}; skipping matching.")
-            continue
+            if adsb_traf is None:
+                print(f"[warn] No ADS-B data for {day_tag}; skipping matching.")
+                continue
 
         # ---------- 4. TRANSCRIBER ----------
-
-        print(f"[info] transcribing {day_tag} ...")
-        transcripts = transcribe_catalog(
-            catalog,
-            segmentation_method=segmenter,
-            transcriber=transcriber,
-            verbose=False,
-            **segmenter_kwargs,
-        )
-        # Save transcripts
-        save_transcripts_json(transcripts, str(day_dir / "transcripts.json"))
+        transcripts = load_transcripts_json(p_trs)
+        if transcripts is not None:
+            print("[skip] transcripts.json found → loading")
+        else:
+            print(f"[info] transcribing {day_tag} ...")
+            transcripts = transcribe_catalog(
+                catalog,
+                segmentation_method=segmenter,
+                transcriber=transcriber,
+                verbose=False,
+                **segmenter_kwargs,
+            )
+            save_transcripts_json(transcripts, p_trs)
 
         # ---------- 5. CALLSIGN MATCHING ----------
-        print("[info] building ADS-B time ranges ...")
-        
-        adsb_ranges = build_timestamp_range(adsb_traf)
+        callsign_communications, df = load_callsign_comms(p_cs_json, p_cs_parq)
+        if callsign_communications is not None and df is not None and not df.empty:
+            print("[skip] callsign_comms.{json,parquet} found → loading")
+        else:
+            print("[info] building ADS-B time ranges ...")
+            adsb_ranges = build_timestamp_range(adsb_traf)
 
-        print(f"[info] extracting callsign communications for {day_tag} ...")
-        callsign_communications, df = extract_callsign_communications(
-            transcripts,
-            adsb_traf=adsb_traf,               
-            adsb_ranges=adsb_ranges,
-            closest_callsign_at_time=closest_callsign_at_time,
-            merge_callsign_entities=merge_callsign_entities,
-            batch_size=64,
-            match_threshold=0.7,
-            time_tolerance_s=5*60,
-            include_unmatched=True,
-            progress=args.show_progress,
-            return_df=True,
-        )
+            print(f"[info] extracting callsign communications for {day_tag} ...")
+            callsign_communications, df = extract_callsign_communications(
+                transcripts,
+                adsb_traf=adsb_traf,               
+                adsb_ranges=adsb_ranges,
+                closest_callsign_at_time=closest_callsign_at_time,
+                merge_callsign_entities=merge_callsign_entities,
+                batch_size=64,
+                match_threshold=0.7,
+                time_tolerance_s=5*60,
+                include_unmatched=True,
+                progress=args.show_progress,
+                return_df=True,
+            )
+            save_callsign_comms_json(callsign_communications, p_cs_json)
+            if df is not None and not df.empty:
+                df.to_parquet(p_cs_parq, index=False)
 
-        # Save callsign results
-        save_callsign_comms_json(callsign_communications, str(day_dir / "callsign_comms.json"))
-        if df is not None and not df.empty:
-            df.to_parquet(day_dir / "callsign_comms.parquet", index=False)
-
-        print(f"[done] Wrote outputs to {day_dir}")
+        print(f"[done] Wrote outputs to {day_tag} → {day_dir}")
 
 
 if __name__ == "__main__":
